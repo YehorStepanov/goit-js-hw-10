@@ -11,10 +11,10 @@ formElem.addEventListener('submit', e => {
 });
 
 function createPromise(delay, status) {
-  const promise = new Promise((resole, reject) => {
+  const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
       if (status === 'fulfilled') {
-        resole(delay);
+        resolve(delay);
       } else {
         reject(delay);
       }
@@ -24,28 +24,27 @@ function createPromise(delay, status) {
 }
 
 function alertResult(delay, status) {
-  const pr1 = createPromise(delay, status);
-  function onFulfilled(res) {
-    iziToast.show({
-      theme: 'dark',
-      position: 'topRight',
-      iconUrl: 'https://cdn-icons-png.flaticon.com/512/190/190411.png',
-      message: `Fulfilled promise in ${res}ms`,
-      messageColor: 'white',
-      icon: 'icon-person',
-      color: '#59A10D',
+  createPromise(delay, status)
+    .then(res => {
+      iziToast.show({
+        theme: 'dark',
+        position: 'topRight',
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/190/190411.png',
+        message: `Fulfilled promise in ${res}ms`,
+        messageColor: 'white',
+        icon: 'icon-person',
+        color: '#59A10D',
+      });
+    })
+    .catch(res => {
+      iziToast.show({
+        theme: 'dark',
+        position: 'topRight',
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1828/1828843.png',
+        message: `Rejected promise in ${res}ms`,
+        messageColor: 'white',
+        icon: 'icon-person',
+        color: '#ef4040',
+      });
     });
-  }
-  function onRejected(res) {
-    iziToast.show({
-      theme: 'dark',
-      position: 'topRight',
-      iconUrl: 'https://cdn-icons-png.flaticon.com/512/1828/1828843.png',
-      message: `Rejected promise in ${res}ms`,
-      messageColor: 'white',
-      icon: 'icon-person',
-      color: '#ef4040',
-    });
-  }
-  pr1.then(onFulfilled).catch(onRejected);
 }
